@@ -2,7 +2,6 @@
 Turns mobile phone into remote control for hydrogen.
 Handy for garage bands, multiple musicans can control one drummer ;)
 Utilizes OSC interface.
-![](alltogether.png)
 
 # How to run
 1) Run `./hydropad.sh` or `python HydroApp.py`
@@ -14,6 +13,7 @@ Utilizes OSC interface.
 * Please enable OSC support in hydrogen.
 ![](hydrogen.png)
 
+![](alltogether.png)
 
 ### Notes
 Works only if your hydropad server is reachable from your phone - you must be on same (wifi) network.
