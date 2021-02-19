@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="author" content="Pavel Prchal">
+    <meta name="description" content="Akordy a stupnice">
+
+    <title>Hydropad</title>
+    <!-- FONT -->
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    
+    <script>
+        // let data = {element: "barium"};
+
+        window.post = function (url, data) {
+            return fetch(url, { method: "POST", body: JSON.stringify(data) })
+        }
+
+        function oscCommand(cmd, param) {
+            let qcmd = ""
+            if(param === undefined){
+                qcmd = `osc/${cmd}`
+            }else{
+                qcmd = `osc/${cmd}/${param}`
+            }
+            post(qcmd, { param: param });
+        }
+    </script>
+</head>
+
+<body>
+    <h3>Hydropad</h3>
+    <div class="container">
+        <input type="button" onclick="oscCommand('PLAY')" value="start" class="one-third column button button-primary" />
+        <input type="button" onclick="oscCommand('STOP')" value="stop" class="one-third column button" />
+        
+        <input type="button" onclick="oscCommand('BPM_INCR')" value="BPM +" class="one-third column button" />
+        <input type="button" onclick="oscCommand('BPM_DECR')" value="BPM -" class="one-third column button" />
+
+        <input type="button" onclick="oscCommand('MASTER_VOLUME_RELATIVE', 1)" value="Volume +" class="one-third column button" />
+        <input type="button" onclick="oscCommand('MASTER_VOLUME_RELATIVE', -1)" value="Volume -" class="one-third column button" />
+        <div>Pavel Prchal, 2021</div>
+    </div>
+</body>
+
+</html>
