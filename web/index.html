@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="cs">
 
 <head>
     <meta charset="UTF-8">
@@ -10,15 +10,13 @@
 
     <title>Hydropad</title>
     <!-- FONT -->
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <!-- <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'> -->
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
     
     <script>
-        // let data = {element: "barium"};
-
         window.post = function (url, data) {
             return fetch(url, { method: "POST", body: JSON.stringify(data) })
         }
@@ -31,6 +29,26 @@
                 qcmd = `osc/${cmd}/${param}`
             }
             post(qcmd, { param: param });
+        }
+
+        let prevDate = new Date()
+        let prevBPM = 60
+        function tapTempo() {
+            let date = new Date()
+            let delta = (date - prevDate) / 1000
+            prevDate = date
+
+            // 40 BPM is minimum, wait for next tap
+            let bpm = 40
+            if(delta >= 1.5){
+                console.debug('wait')
+            }else{
+                // tbetw[0,5] = 60 / BPM(120)
+                let currentBPM = 60 / delta
+                bpm = Math.floor((60 * currentBPM  + 40 * prevBPM) / 100)
+            }
+
+            document.getElementById('divBPM').innerText = bpm
         }
     </script>
 </head>
@@ -46,6 +64,10 @@
 
         <input type="button" onclick="oscCommand('MASTER_VOLUME_RELATIVE', 1)" value="Volume +" class="one-third column button" />
         <input type="button" onclick="oscCommand('MASTER_VOLUME_RELATIVE', -1)" value="Volume -" class="one-third column button" />
+
+        <div id="divBPM"></div>
+        <input type="button" onclick="tapTempo()" value="Tap tempo" class="one-third column button" />
+
         <div>Pavel Prchal, 2021</div>
     </div>
 </body>
