@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler
 from osc import OSC
 
-class HydroHttpServer(BaseHTTPRequestHandler):
-    def __init__(self):
-        self.oscClient = OSC()
 
+oscClient = OSC()
+
+class HydroHttpServer(BaseHTTPRequestHandler):
     def do_GET(self):
         if 'favicon.ico' in self.path:
             self.send_response(404)
@@ -32,11 +32,11 @@ class HydroHttpServer(BaseHTTPRequestHandler):
         
         if len(splits) == 3:
             command = splits[2].upper()
-            self.oscClient.command(command, 1)
+            oscClient.command(command, 1)
         elif len(splits) == 4:
             command = splits[2].upper()
             param = splits[3].upper()
-            self.oscClient.command(command, param)
+            oscClient.command(command, param)
 
         self.send_response(200)
         self.end_headers()
