@@ -10,13 +10,11 @@ class OSCEngine(AbstractEngine):
     def executeCommand(self, splits):
         if len(splits) == 3:
             command = splits[2].upper()
-            self.oscClient.command(command, 1)
+            self.command(command, 1)
         elif len(splits) == 4:
             command = splits[2].upper()
             param = splits[3].upper()
-            self.oscClient.command(command, param)
-
-        print('OSCEngine:  executeCommand')
+            self.command(command, param)
 
     def command(self, name, param):
         cmd = '/Hydrogen/' + name
