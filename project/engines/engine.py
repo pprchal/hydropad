@@ -3,7 +3,7 @@ from config import config
 
 class AbstractEngine(ABC):
     @abstractmethod
-    def executeCommand(self):
+    def handleMessage(self):
         pass
 
 

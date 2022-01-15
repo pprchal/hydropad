@@ -6,17 +6,17 @@ from project.engines.midi import MIDIEngine
 
 
 class HydroHttpServer(BaseHTTPRequestHandler):
+    # TODO: do better factory here
     if config.engine() == "OSC":
         engine = OSCEngine()
     else:
         engine = MIDIEngine()
 
+    # serve HTTP
     def do_GET(self):
         if 'favicon.ico' in self.path:
             self.send_response(404)
             return
-
-        ## self.engine = OSCEngine()
 
         self.send_response(200)
         self.end_headers()
@@ -24,9 +24,11 @@ class HydroHttpServer(BaseHTTPRequestHandler):
 
     # dispatch commands from mobile
     def do_POST(self):
+        # c/play/[volume]
+        # n/note
         splits = self.path.split('/')
         print(self.path)
-        self.engine.executeCommand(splits)
+        self.engine.handleMessage(splits)
         self.send_response(200)
         self.end_headers()
 

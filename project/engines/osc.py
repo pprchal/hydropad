@@ -5,23 +5,18 @@ from pythonosc import udp_client
 class OSCEngine(AbstractEngine):
     def __init__(self):
         self.client = udp_client.SimpleUDPClient(config.osc_ip(), config.osc_port())
-        print('OSC Engine initialized')
+        print(f'OSC Engine initialized: {config.osc_ip()} {config.osc_port()}')
 
-    def executeCommand(self, splits):
-        if len(splits) == 3:
-            command = splits[2].upper()
-            self.command(command, 1)
-        elif len(splits) == 4:
-            command = splits[2].upper()
+    def handleMessage(self, splits):
+        command = splits[2].upper()
+        param = 1
+        
+        if len(splits) == 4:
             param = splits[3].upper()
-            self.command(command, param)
-
-    def command(self, name, param):
-        cmd = '/Hydrogen/' + name
-        print(cmd + "param: " + str(param))
+        
+        self.command(command, param)
+        cmd = '/Hydrogen/' + command
         self.client.send_message(cmd, int(param))
-
-
 
 # /Hydrogen/STRIP_VOLUME_ABSOLUTE/
 # /Hydrogen/PAN_ABSOLUTE/
