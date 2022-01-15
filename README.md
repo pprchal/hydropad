@@ -3,7 +3,7 @@
 
 > Handy for garage bands, multiple musicans can control one drummer ;)
 
-> Utilizes MIDI or OSC interface.
+> Utilizes **MIDI** or OSC interface.
 
 > Design your own `index.html`
 
@@ -37,7 +37,7 @@ xrdb -query
 
 
 # Revision history
-* [01-15-2022] Started work on MIDI support
+* [01-15-2022] Started work on MIDI support - concept OK -> move to MIDI. Web socket needed
 * [02-17-2021] First prototype
 
 

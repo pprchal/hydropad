@@ -28,7 +28,8 @@
         }
 
         function playNote(note){
-            post('n', { param: note });
+            console.debug(note)
+            post(`n/${note}`, { param: note });
         }
 
         let prevDate = new Date()
@@ -74,6 +75,7 @@
 
 
         <input type="button" onclick="playNote('C1')" value="Note" class="one-third column button" />
+        <input type="button" onclick="playNote('C2')" value="Note2" class="one-third column button" />
 
         <div>Pavel Prchal, 2022</div>
     </div>

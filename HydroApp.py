@@ -42,7 +42,7 @@ class HydroApp(tk.Frame):
 
 def createGUI():
     root = tk.Tk()
-    root.title("hydropad 0.1")
+    root.title("hydropad 0.2")
     root.geometry('800x800')
     app = HydroApp(master=root)
     return app
