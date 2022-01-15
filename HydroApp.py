@@ -1,12 +1,12 @@
 from tkinter import *
-from PIL import Image
+# from PIL import Image
 from http.server import HTTPServer
 import tkinter as tk
 import threading
 from config import config
 from PIL import Image
-from qr import printQR
-from HydroHttpServer import HydroHttpServer
+from project.gui.qr import printQR
+from project.HydroHttpServer import HydroHttpServer
 import webbrowser
 
 class HydroApp(tk.Frame):

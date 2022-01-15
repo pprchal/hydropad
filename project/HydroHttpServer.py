@@ -1,19 +1,30 @@
 from http.server import BaseHTTPRequestHandler
-from osc import OSC
-
-
-oscClient = OSC()
+from project.engines.osc import OSCEngine
 
 class HydroHttpServer(BaseHTTPRequestHandler):
+    engine = OSCEngine()
+
     def do_GET(self):
         if 'favicon.ico' in self.path:
             self.send_response(404)
             return
 
+        ## self.engine = OSCEngine()
+
         self.send_response(200)
         self.end_headers()
         self.wfile.write(self.loadFile())
 
+    # dispatch commands from mobile
+    def do_POST(self):
+        splits = self.path.split('/')
+        print(self.path)
+        self.engine.executeCommand(splits)
+        self.send_response(200)
+        self.end_headers()
+
+
+    # serve http requests - index.html
     def loadFile(self):
         if self.path == "/": 
             self.send_header("Content-type", "text/html")
@@ -24,24 +35,3 @@ class HydroHttpServer(BaseHTTPRequestHandler):
 
         f = open(filePath, "r")
         return bytes(f.read(), "utf-8")
-
-
-    def do_POST(self):
-        splits = self.path.split('/')
-        print(self.path)
-        
-        if len(splits) == 3:
-            command = splits[2].upper()
-            oscClient.command(command, 1)
-        elif len(splits) == 4:
-            command = splits[2].upper()
-            param = splits[3].upper()
-            oscClient.command(command, param)
-
-        self.send_response(200)
-        self.end_headers()
-        
-        
-        
-        
-    
