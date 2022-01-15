@@ -5,7 +5,7 @@ from pythonosc import udp_client
 class OSCEngine(AbstractEngine):
     def __init__(self):
         self.client = udp_client.SimpleUDPClient(config.osc_ip(), config.osc_port())
-        print('OSCEngine initialized')
+        print('OSC Engine initialized')
 
     def executeCommand(self, splits):
         if len(splits) == 3:

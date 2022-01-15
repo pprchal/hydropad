@@ -1,8 +1,15 @@
 from http.server import BaseHTTPRequestHandler
+from project.engines.engine import AbstractEngine
+from config import config
 from project.engines.osc import OSCEngine
+from project.engines.midi import MIDIEngine
+
 
 class HydroHttpServer(BaseHTTPRequestHandler):
-    engine = OSCEngine()
+    if config.engine() == "OSC":
+        engine = OSCEngine()
+    else:
+        engine = MIDIEngine()
 
     def do_GET(self):
         if 'favicon.ico' in self.path:

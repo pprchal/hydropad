@@ -1,7 +1,14 @@
 # Mobile drumpad for hydrogen
-Turns mobile phone into remote control for hydrogen.
-Handy for garage bands, multiple musicans can control one drummer ;)
-Utilizes OSC interface.
+> Turns mobile phone into remote control for hydrogen.
+
+> Handy for garage bands, multiple musicans can control one drummer ;)
+
+> Utilizes MIDI or OSC interface.
+
+> Design your own `index.html`
+
+![](alltogether.png)
+
 
 # How to run
 1) Run `python HydroApp.py`
@@ -30,8 +37,9 @@ xrdb -query
 
 
 # Revision history
+* [01-15-2022] Started work on MIDI support
 * [02-17-2021] First prototype
 
 
-Pavel Prchal, 2021
+Pavel Prchal, 2022
 

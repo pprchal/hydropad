@@ -1,10 +1,8 @@
 from tkinter import *
-# from PIL import Image
 from http.server import HTTPServer
 import tkinter as tk
 import threading
 from config import config
-from PIL import Image
 from project.gui.qr import printQR
 from project.HydroHttpServer import HydroHttpServer
 import webbrowser
