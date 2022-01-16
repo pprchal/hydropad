@@ -7,14 +7,14 @@ class OSCEngine(AbstractEngine):
         self.client = udp_client.SimpleUDPClient(Config.osc_ip(), Config.osc_port())
         print(f'OSC Engine initialized: {Config.osc_ip()} {Config.osc_port()}')
 
-    def handleMessage(self, splits):
+    def handle_message(self, splits):
         command = splits[1].upper()
         param = 1
         
-        if len(splits) == 4:
+        if len(splits) == 3:
             param = splits[2].upper()
         
-        self.command(command, param)
+        ## self.command(command, param)
         cmd = '/Hydrogen/' + command
         self.client.send_message(cmd, int(param))
 

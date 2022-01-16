@@ -3,7 +3,7 @@ from project.engines.OSCEngine import OSCEngine
 from project.engines.MIDIEngine import MIDIEngine
 
 class Runtime():
-    engine = None
+    engines = []
     server = None
 
     @classmethod
@@ -12,8 +12,15 @@ class Runtime():
 
     @classmethod
     def init(cls):
-        if Config.engine() == "OSC":
-            cls.engine = OSCEngine()
-        else:
-            cls.engine = MIDIEngine()        
+        for engineDef in Config.engines().split(','):
+            if engineDef == "OSC":
+                cls.engines.append(OSCEngine())
+            elif engineDef == "MIDI":
+                cls.engines.append(MIDIEngine())
 
+    @classmethod
+    def handle_message(cls, split):
+        for engine in  cls.engines:
+            engine.handle_message(split)
+
+    

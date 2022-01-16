@@ -10,7 +10,7 @@ class MIDIEngine(AbstractEngine):
         self.outport = mido.open_output(Config.midi_channel())
         print(f'MIDI Engine initialized: {Config.midi_channel()}')
 
-    def handleMessage(self, splits):
+    def handle_message(self, splits):
         note = 38
         
         if splits[1] == 'C2':

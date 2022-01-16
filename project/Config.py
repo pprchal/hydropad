@@ -2,8 +2,8 @@ import configparser
 
 class Config():
     @classmethod
-    def engine(cls):
-        return conf['DEFAULT']['Engine']
+    def engines(cls):
+        return conf['DEFAULT']['Engines']
 
     @classmethod
     def osc_ip(cls):
