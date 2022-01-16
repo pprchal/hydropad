@@ -9,5 +9,5 @@ class HydroHttp(web.View):
         data = await self.request.content.read()
         string = data.decode('utf8')
         print(string)
-        Runtime.handle_message(string.split('/'))
+        ## Runtime.handle_message_multiple(string.split('/'))
         return web.Response(text="", status=200)

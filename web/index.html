@@ -17,6 +17,11 @@
             return fetch(url, { method: "POST", body: data })
         }
 
+        const websocket = new WebSocket("ws://192.168.1.38:8080/ws");
+        websocket.onmessage = ({ data }) => {
+            console.debug('ws: ' + data)
+        };
+
         function cmd(type, cmd, param) {
             let qcmd = ''
             if(param === undefined){
@@ -24,13 +29,9 @@
             }else{
                 qcmd = `${type}/${cmd}/${param}`
             }
-            post("/", qcmd);
+            // post("/", qcmd);
+            websocket.send(qcmd)
         }
-
-        // function playNote(note){
-        //     console.debug(note)
-        //     post("/", `n/${note}`);
-        // }
 
         let prevDate = new Date()
         let prevBPM = 60

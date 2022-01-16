@@ -19,7 +19,7 @@ class Runtime():
                 cls.engines.append(MIDIEngine())
 
     @classmethod
-    def handle_message(cls, split):
+    def handle_message_multiple(cls, split):
         for engine in  cls.engines:
             engine.handle_message(split)
 

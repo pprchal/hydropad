@@ -2,7 +2,31 @@ import threading
 from project.Config import Config
 from aiohttp import web, WSCloseCode
 import asyncio
+from project.Runtime import Runtime
 from project.http.HydroHttp import HydroHttp
+
+
+async def websocket_handler(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+
+    async for msg in ws:
+        print(msg.data)
+        split = msg.data.split('/')
+        Runtime.handle_message_multiple(split)
+        ws.send_str('ok')
+        
+        # if msg.type == aiohttp.WSMsgType.TEXT:
+        #     if msg.data == 'close':
+        #         await ws.close()
+        #     else:
+        #         await ws.send_str('some websocket message payload')
+        # elif msg.type == aiohttp.WSMsgType.ERROR:
+        #     print('ws connection closed with exception %s' % ws.exception())
+
+    return ws
+
+
 
 def thread_function(loop):
     try:
@@ -17,9 +41,9 @@ class HydroServer():
     def create_runner(self):
         self.app = web.Application()
         self.app.add_routes([
+            web.get('/ws', websocket_handler),
             web.static('/', 'web'),
-            web.post('/', HydroHttp),
-            ## ,web.get('/ws', websocket_handler),
+            web.post('/', HydroHttp)
         ])
         return web.AppRunner(self.app)   
 
