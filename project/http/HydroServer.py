@@ -17,9 +17,8 @@ class HydroServer():
     def create_runner(self):
         self.app = web.Application()
         self.app.add_routes([
-            # web.get('/', HydroHttp),
+            web.static('/', 'web'),
             web.post('/', HydroHttp),
-            web.static('/prefix', 'web')
             ## ,web.get('/ws', websocket_handler),
         ])
         return web.AppRunner(self.app)   

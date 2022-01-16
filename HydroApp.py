@@ -22,7 +22,7 @@ class HydroApp(tk.Frame):
         webbrowser.open_new(url)
     
     def open_qr_img(self):
-        url = f'http://{Config.server_name()}:{Config.server_port()}'
+        url = f'http://{Config.server_name()}:{Config.server_port()}/index.html'
         link1 = Label(self.master, text='Open web browser - hydropad', fg="blue", cursor="hand2")
         link1.pack()
         link1.bind("<Button-1>", lambda e: self.callback(url))        

@@ -17,20 +17,20 @@
             return fetch(url, { method: "POST", body: data })
         }
 
-        function sendCommand(cmd, param) {
-            let qcmd = ""
+        function cmd(type, cmd, param) {
+            let qcmd = ''
             if(param === undefined){
-                qcmd = `c/${cmd}`
+                qcmd = `${type}/${cmd}`
             }else{
-                qcmd = `c/${cmd}/${param}`
+                qcmd = `${type}/${cmd}/${param}`
             }
             post("/", qcmd);
         }
 
-        function playNote(note){
-            console.debug(note)
-            post("/", `n/${note}`);
-        }
+        // function playNote(note){
+        //     console.debug(note)
+        //     post("/", `n/${note}`);
+        // }
 
         let prevDate = new Date()
         let prevBPM = 60
@@ -61,21 +61,21 @@
 <body>
     <h3>Hydropad</h3>
     <div class="container">
-        <input type="button" onclick="sendCommand('PLAY')" value="start" class="one-third column button button-primary" />
-        <input type="button" onclick="sendCommand('STOP')" value="stop" class="one-third column button" />
+        <input type="button" onclick="cmd('c', 'PLAY')" value="start" class="one-third column button button-primary" />
+        <input type="button" onclick="cmd('c', 'STOP')" value="stop" class="one-third column button" />
         
-        <input type="button" onclick="sendCommand('BPM_INCR')" value="BPM +" class="one-third column button" />
-        <input type="button" onclick="sendCommand('BPM_DECR')" value="BPM -" class="one-third column button" />
+        <input type="button" onclick="cmd('c', 'BPM_INCR')" value="BPM +" class="one-third column button" />
+        <input type="button" onclick="cmd('c', 'BPM_DECR')" value="BPM -" class="one-third column button" />
 
-        <input type="button" onclick="sendCommand('MASTER_VOLUME_RELATIVE', 1)" value="Volume +" class="one-third column button" />
-        <input type="button" onclick="sendCommand('MASTER_VOLUME_RELATIVE', -1)" value="Volume -" class="one-third column button" />
+        <input type="button" onclick="cmd('c', 'MASTER_VOLUME_RELATIVE', 1)" value="Volume +" class="one-third column button" />
+        <input type="button" onclick="cmd('c', 'MASTER_VOLUME_RELATIVE', -1)" value="Volume -" class="one-third column button" />
 
         <div id="divBPM"></div>
         <input type="button" onclick="tapTempo()" value="Tap tempo" class="one-third column button" />
 
 
-        <input type="button" onclick="playNote('C1')" value="Note" class="one-third column button" />
-        <input type="button" onclick="playNote('C2')" value="Note2" class="one-third column button" />
+        <input type="button" onclick="cmd('n', 'C1')" value="Note" class="one-third column button" />
+        <input type="button" onclick="cmd('n', 'C2')" value="Note2" class="one-third column button" />
 
         <div>Pavel Prchal, 2022</div>
     </div>
