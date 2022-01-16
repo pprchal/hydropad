@@ -7,6 +7,11 @@ from project.gui.qr import printQR
 from project.HydroHttpServer import HydroHttpServer
 import webbrowser
 
+import aiohttp
+from aiohttp import web, WSCloseCode
+import asyncio
+
+
 class HydroApp(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -47,16 +52,13 @@ def createGUI():
     app = HydroApp(master=root)
     return app
 
-def thread_function(ws):
-    try:
-        ws.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    ws.server_close()
+server = HydroHttpServer()
+server.start()
 
 app = createGUI()
-app.webServer = HTTPServer((config.server_name(), config.server_port()), HydroHttpServer)
-app.httpThread = threading.Thread(target=thread_function, args=[app.webServer])
-app.httpThread.start()
 app.mainloop()
+
+
+
+
 
