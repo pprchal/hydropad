@@ -1,8 +1,8 @@
 from tkinter import *
 import tkinter as tk
-from project.engines.osc import OSCEngine
-from project.engines.midi import MIDIEngine
-from config import config
+from project.engines.OSCEngine import OSCEngine
+from project.engines.MIDIEngine import MIDIEngine
+from project.Config import Config
 from project.gui.qr import printQR
 from project.http.HydroServer import HydroServer
 import webbrowser
@@ -23,12 +23,12 @@ class HydroApp(tk.Frame):
         webbrowser.open_new(url)
     
     def open_qr_img(self):
-        url = f'http://{config.server_name()}:{config.server_port()}'
+        url = f'http://{Config.server_name()}:{Config.server_port()}'
         link1 = Label(self.master, text='Open web browser - hydropad', fg="blue", cursor="hand2")
         link1.pack()
         link1.bind("<Button-1>", lambda e: self.callback(url))        
 
-        code_xbm = printQR(config.server_name(), config.server_port())
+        code_xbm = printQR(Config.server_name(), Config.server_port())
         code_bmp = tk.BitmapImage(master=self.master, data=code_xbm)
         panel = tk.Label(image = code_bmp)
         panel.image = code_bmp
@@ -48,7 +48,7 @@ def createGUI():
     return app
 
 def create_engine():
-    if config.engine() == "OSC":
+    if Config.engine() == "OSC":
         return OSCEngine()
     else:
         return MIDIEngine()

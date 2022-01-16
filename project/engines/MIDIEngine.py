@@ -1,5 +1,5 @@
-from project.engines.engine import AbstractEngine
-from config import config
+from project.engines.AbstractEngine import AbstractEngine
+from project.Config import Config
 import time
 import mido
 
@@ -7,8 +7,8 @@ class MIDIEngine(AbstractEngine):
     midi_channel = 9
 
     def __init__(self):
-        self.outport = mido.open_output(config.midi_channel())
-        print(f'MIDI Engine initialized: {config.midi_channel()}')
+        self.outport = mido.open_output(Config.midi_channel())
+        print(f'MIDI Engine initialized: {Config.midi_channel()}')
 
     def handleMessage(self, splits):
         note = 38

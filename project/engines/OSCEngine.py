@@ -1,11 +1,11 @@
-from project.engines.engine import AbstractEngine
-from config import config
+from project.engines.AbstractEngine import AbstractEngine
+from project.Config import Config
 from pythonosc import udp_client
 
 class OSCEngine(AbstractEngine):
     def __init__(self):
-        self.client = udp_client.SimpleUDPClient(config.osc_ip(), config.osc_port())
-        print(f'OSC Engine initialized: {config.osc_ip()} {config.osc_port()}')
+        self.client = udp_client.SimpleUDPClient(Config.osc_ip(), Config.osc_port())
+        print(f'OSC Engine initialized: {Config.osc_ip()} {Config.osc_port()}')
 
     def handleMessage(self, splits):
         command = splits[2].upper()

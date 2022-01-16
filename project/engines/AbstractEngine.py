@@ -1,5 +1,5 @@
 from abc import ABC,abstractmethod
-from config import config
+from project.Config import config
 
 class AbstractEngine(ABC):
     @abstractmethod

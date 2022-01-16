@@ -1,6 +1,6 @@
 import configparser
 
-class config():
+class Config():
     @classmethod
     def engine(cls):
         return conf['DEFAULT']['Engine']

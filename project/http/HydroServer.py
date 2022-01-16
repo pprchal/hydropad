@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
-from project.engines.engine import AbstractEngine
-from config import config
+import threading
+from project.engines.AbstractEngine import AbstractEngine
+from project.Config import Config
 import aiohttp
 from aiohttp import web, WSCloseCode
 import asyncio
@@ -19,7 +20,7 @@ class HydroServer():
         ])
         return web.AppRunner(app)   
 
-    async def start_server(self, host=config.server_name(), port=config.server_port()):
+    async def start_server(self, host=Config.server_name(), port=Config.server_port()):
         runner = self.create_runner()
         await runner.setup()
         site = web.TCPSite(runner, host, port)
@@ -30,6 +31,8 @@ class HydroServer():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.start_server())
         loop.run_forever()
+        serverThread = threading.Thread(target=thread_function, args=[app.webServer])
+        serverThread.start()
 
     def thread_function(ws):
         try:
