@@ -46,7 +46,7 @@ def createGUI():
     app = HydroApp(master=root)
     return app
 
-Runtime.create_engine()
+Runtime.init_engine()
 server = HydroServer()
 server.start()
 

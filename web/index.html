@@ -14,7 +14,7 @@
     
     <script>
         window.post = function (url, data) {
-            return fetch(url, { method: "POST", body: JSON.stringify(data) })
+            return fetch(url, { method: "POST", body: data })
         }
 
         function sendCommand(cmd, param) {
@@ -24,12 +24,12 @@
             }else{
                 qcmd = `c/${cmd}/${param}`
             }
-            post(qcmd, { param: param });
+            post("/", qcmd);
         }
 
         function playNote(note){
             console.debug(note)
-            post(`n/${note}`, { param: note });
+            post("/", `n/${note}`);
         }
 
         let prevDate = new Date()

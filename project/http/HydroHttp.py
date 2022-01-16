@@ -17,11 +17,10 @@ class HydroHttp(web.View):
     async def post(self):
         # c/play/[volume]
         # n/note
-        splits = self.path.split('/')
-        print(self.path)
-        Runtime.get_engine().handleMessage(splits)
-        self.send_response(200)
-        self.end_headers()        
+        data = await self.request.content.read()
+        string = data.decode('utf8')
+        Runtime.get_engine().handleMessage(string.split('/'))
+        return web.Response(text="", status=200)
 
     # serve http requests - index.html
     def load_file(self, path):

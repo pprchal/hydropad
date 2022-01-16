@@ -12,15 +12,16 @@ class MIDIEngine(AbstractEngine):
 
     def handleMessage(self, splits):
         note = 38
-        if splits[2] == 'C2':
+        
+        if splits[1] == 'C2':
             note = 39
             
-        if splits[1] == 'n':
+        if splits[0] == 'n':
             self.outport.send(mido.Message('note_on', channel=self.midi_channel, note=note, velocity=127, time = 200))
             time.sleep(0.2)
             self.outport.send(mido.Message('note_off', channel=self.midi_channel, note=note, velocity=0))
         elif splits[0] == 'c':
-            self.outport.send(mido.Message('control_change', channel=0, control=122, value=int(splits[2]), time=0))
+            self.outport.send(mido.Message('control_change', channel=0, control=122, value=int(splits[1]), time=0))
 
 
 #  20:0   Note on                 9, note 38, velocity 127
