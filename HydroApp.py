@@ -4,7 +4,7 @@ from project.engines.osc import OSCEngine
 from project.engines.midi import MIDIEngine
 from config import config
 from project.gui.qr import printQR
-from project.web.HydroServer import HydroServer
+from project.http.HydroServer import HydroServer
 import webbrowser
 
 class HydroApp(tk.Frame):
