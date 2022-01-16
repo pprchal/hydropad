@@ -1,16 +1,11 @@
 from tkinter import *
-from http.server import HTTPServer
 import tkinter as tk
-import threading
+from project.engines.osc import OSCEngine
+from project.engines.midi import MIDIEngine
 from config import config
 from project.gui.qr import printQR
-from project.HydroHttpServer import HydroHttpServer
+from project.web.HydroServer import HydroServer
 import webbrowser
-
-import aiohttp
-from aiohttp import web, WSCloseCode
-import asyncio
-
 
 class HydroApp(tk.Frame):
     def __init__(self, master=None):
@@ -52,7 +47,14 @@ def createGUI():
     app = HydroApp(master=root)
     return app
 
-server = HydroHttpServer()
+def create_engine():
+    if config.engine() == "OSC":
+        return OSCEngine()
+    else:
+        return MIDIEngine()
+
+# engine = create_engine()
+server = HydroServer()
 server.start()
 
 app = createGUI()
