@@ -1,3 +1,4 @@
+from project.Runtime import Runtime
 from aiohttp import web, WSCloseCode
 
 class HydroHttp(web.View):
@@ -18,7 +19,7 @@ class HydroHttp(web.View):
         # n/note
         splits = self.path.split('/')
         print(self.path)
-        self.engine.handleMessage(splits)
+        Runtime.get_engine().handleMessage(splits)
         self.send_response(200)
         self.end_headers()        
 

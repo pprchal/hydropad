@@ -31,8 +31,8 @@ class HydroServer():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.start_server())
         loop.run_forever()
-        serverThread = threading.Thread(target=thread_function, args=[app.webServer])
-        serverThread.start()
+        # serverThread = threading.Thread(target=thread_function, args=[app.webServer])
+        # serverThread.start()
 
     def thread_function(ws):
         try:

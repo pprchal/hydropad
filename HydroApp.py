@@ -1,7 +1,6 @@
 from tkinter import *
 import tkinter as tk
-from project.engines.OSCEngine import OSCEngine
-from project.engines.MIDIEngine import MIDIEngine
+from project.Runtime import Runtime
 from project.Config import Config
 from project.gui.qr import printQR
 from project.http.HydroServer import HydroServer
@@ -47,13 +46,7 @@ def createGUI():
     app = HydroApp(master=root)
     return app
 
-def create_engine():
-    if Config.engine() == "OSC":
-        return OSCEngine()
-    else:
-        return MIDIEngine()
-
-# engine = create_engine()
+Runtime.create_engine()
 server = HydroServer()
 server.start()
 
