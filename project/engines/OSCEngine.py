@@ -8,11 +8,11 @@ class OSCEngine(AbstractEngine):
         print(f'OSC Engine initialized: {Config.osc_ip()} {Config.osc_port()}')
 
     def handleMessage(self, splits):
-        command = splits[2].upper()
+        command = splits[1].upper()
         param = 1
         
         if len(splits) == 4:
-            param = splits[3].upper()
+            param = splits[2].upper()
         
         self.command(command, param)
         cmd = '/Hydrogen/' + command

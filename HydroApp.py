@@ -15,7 +15,7 @@ class HydroApp(tk.Frame):
 
     def create_widgets(self):
         self.open_qr_img()
-        butt = tk.Button(self, command=self.quitClick, text='Quit', bg='green')
+        butt = tk.Button(self, command=self.on_quit_click, text='Quit', bg='green')
         butt.pack()
 
     def callback(self, url):
@@ -34,24 +34,23 @@ class HydroApp(tk.Frame):
         panel.pack()
         
 
-    def quitClick(self):
-        self.webServer.shutdown()
+    def on_quit_click(self):
+        Runtime.server.quit()
         self.quit()
 
 
-def createGUI():
+def create_gui():
     root = tk.Tk()
-    root.title("hydropad 0.2")
+    root.title("hydropad 0.3")
     root.geometry('800x800')
     app = HydroApp(master=root)
     return app
 
-Runtime.init_engine()
-server = HydroServer()
-server.start()
+Runtime.init()
+Runtime.server = HydroServer()            
+Runtime.server.start_serve()
 
-app = createGUI()
-app.mainloop()
+create_gui().mainloop()
 
 
 
