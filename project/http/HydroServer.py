@@ -13,7 +13,7 @@ class HydroServer(Thread):
             web.get('/', self.handle_index),
             web.static('/web', 'web'),
             web.get('/ws', self.handle_websocket),
-            web.post('/command', self.handle_post)
+            web.post('/command', self.handle_post)  ## TODO: remove and/or as option
         ])
 
     # main handler entrypoint (thread/loop)
@@ -22,7 +22,7 @@ class HydroServer(Thread):
 
         runner = web.AppRunner(self.app, access_log=None)
         loop.run_until_complete(runner.setup())
-        print(f'http://{Config.server_name()}:{Config.server_port()}/')
+        print(f'http://{Runtime.get_server_ip()}/')
 
         site = web.TCPSite(runner, Config.server_name(), Config.server_port())
         loop.run_until_complete(site.start())   
@@ -61,37 +61,6 @@ class HydroServer(Thread):
         filePath = "web/index.html"
         f = open(filePath, "r")
         content = f.read()
+        f.close()
+        return content.replace("{hydropad:WS_ADDRESS}", f"ws://{Runtime.get_server_ip()}/ws")
 
-        # TODO: do replace wss bootstrap
-        return content
-
-
-# import aiohttp
-# from aiohttp import web, WSCloseCode
-# import asyncio
-
-# async def websocket_handler(request):
-#     ws = web.WebSocketResponse()
-#     await ws.prepare(request)
-
-#     async for msg in ws:
-#         if msg.type == aiohttp.WSMsgType.TEXT:
-#             if msg.data == 'close':
-#                 await ws.close()
-#             else:
-#                 await ws.send_str('some websocket message payload')
-#         elif msg.type == aiohttp.WSMsgType.ERROR:
-#             print('ws connection closed with exception %s' % ws.exception())
-
-#     return ws
-
-
-
-
-
-# def thread_function(loop):
-#     try:
-#         loop.run_forever()
-#     except KeyboardInterrupt:
-#         pass
-#     # loop.

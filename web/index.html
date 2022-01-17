@@ -17,7 +17,7 @@
             return fetch(url, { method: "POST", body: data })
         }
 
-        const websocket = new WebSocket("ws://192.168.1.38:8080/ws");
+        const websocket = new WebSocket('{hydropad:WS_ADDRESS}');
         websocket.onmessage = ({ data }) => {
             console.debug('ws: ' + data)
         };

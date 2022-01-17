@@ -23,4 +23,8 @@ class Runtime():
         for engine in  cls.engines:
             engine.handle_message(split)
 
+    @classmethod 
+    def get_server_ip(cls):
+        return f"{Config.server_name()}:{Config.server_port()}"
+
     
