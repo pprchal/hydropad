@@ -9,8 +9,8 @@
 
     <title>Hydropad</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="/normalize.css">
-    <link rel="stylesheet" href="/skeleton.css">
+    <link rel="stylesheet" href="web/normalize.css">
+    <link rel="stylesheet" href="web/skeleton.css">
     
     <script>
         window.post = function (url, data) {
@@ -29,7 +29,7 @@
             }else{
                 qcmd = `${type}/${cmd}/${param}`
             }
-            // post("/", qcmd);
+            // post("/command", qcmd);
             websocket.send(qcmd)
         }
 

@@ -41,16 +41,19 @@ class HydroApp(tk.Frame):
 
 def create_gui():
     root = tk.Tk()
-    root.title("hydropad 0.3")
+    root.title("hydropad 0.4 +websock")
     root.geometry('800x800')
     app = HydroApp(master=root)
     return app
 
 Runtime.init()
 Runtime.server = HydroServer()            
-Runtime.server.start_serve()
+Runtime.server.start()
 
 create_gui().mainloop()
+
+# print("<ENTER>")
+# input()
 
 
 
