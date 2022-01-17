@@ -1,4 +1,3 @@
-import threading
 from project.Config import Config
 from aiohttp import web, WSCloseCode
 import asyncio
@@ -9,7 +8,6 @@ from threading import Thread
 class HydroServer(Thread):
     def __init__(self):
         Thread.__init__(self)
-        ## handler = Handler()
         self.app = web.Application()
         self.app.add_routes([
             web.get('/', self.handle_index),
@@ -18,31 +16,23 @@ class HydroServer(Thread):
             web.post('/command', self.handle_post)
         ])
 
+    # main handler entrypoint (thread/loop)
     def run(self):
         loop = asyncio.new_event_loop()
-        # asyncio.set_event_loop(loop)
 
-        self.runner = web.AppRunner(self.app, access_log=None)
-        loop.run_until_complete(self.runner.setup())
+        runner = web.AppRunner(self.app, access_log=None)
+        loop.run_until_complete(runner.setup())
         print(f'http://{Config.server_name()}:{Config.server_port()}/')
 
-        # site = web.TCPSite(runner, Config.server_name(), Config.server_port())
-        site = web.TCPSite(self.runner, Config.server_name(), Config.server_port())
+        site = web.TCPSite(runner, Config.server_name(), Config.server_port())
         loop.run_until_complete(site.start())   
         loop.run_forever()
-        # runner = web.AppRunner(self.app)
-        
-        # self.loop.run_until_complete(runner.setup())
-        # site = web.TCPSite(runner, Config.server_name(), Config.server_port())
-        # self.loop.run_until_complete(site.start())                
-
-
 
     # handle ,,index.html''
     async def handle_index(self, request):
         return web.Response(text=self.load_index(), content_type="text/html")
 
-    # handle ,,index.html''
+    # handle command
     async def handle_post(self, request):
         return web.Response(text="OK", content_type="text/html")
 
