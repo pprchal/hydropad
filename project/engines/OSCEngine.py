@@ -3,6 +3,9 @@ from project.Config import Config
 from pythonosc import udp_client
 
 class OSCEngine(AbstractEngine):
+    def get_name(self):
+        return "OSC"
+
     def __init__(self):
         self.client = udp_client.SimpleUDPClient(Config.osc_ip(), Config.osc_port())
         print(f'OSC Engine initialized: {Config.osc_ip()} {Config.osc_port()}')

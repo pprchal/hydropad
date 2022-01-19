@@ -5,4 +5,9 @@ class AbstractEngine(ABC):
     def handle_message(self):
         pass
 
+    @abstractmethod
+    def get_name(self):
+        pass
+    
+
 

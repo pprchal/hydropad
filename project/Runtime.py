@@ -20,8 +20,11 @@ class Runtime():
 
     @classmethod
     def handle_message_multiple(cls, split):
-        for engine in  cls.engines:
-            engine.handle_message(split)
+        for engine in cls.engines:
+            try:
+                engine.handle_message(split)
+            except:
+                print(f'Engine: {engine.get_name()} failed on command: {split}')
 
     @classmethod 
     def get_server_ip(cls):

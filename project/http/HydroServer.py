@@ -2,7 +2,6 @@ from project.Config import Config
 from aiohttp import web, WSCloseCode
 import asyncio
 from project.Runtime import Runtime
-from project.http.HydroHttp import HydroHttp
 from threading import Thread
 
 class HydroServer(Thread):
@@ -13,8 +12,9 @@ class HydroServer(Thread):
             web.get('/', self.handle_index),
             web.static('/web', 'web'),
             web.get('/ws', self.handle_websocket),
-            web.post('/command', self.handle_post)  ## TODO: remove and/or as option
+            web.post('/c', self.handle_post)  ## TODO: remove and/or as option
         ])
+
 
     # main handler entrypoint (thread/loop)
     def run(self):
@@ -34,7 +34,14 @@ class HydroServer(Thread):
 
     # handle command
     async def handle_post(self, request):
-        return web.Response(text="OK", content_type="text/html")
+        # c/play/[volume]
+        # n/note
+        data = await request.content.read()
+        command = data.decode('utf8')
+        print(command)
+        Runtime.handle_message_multiple(command.split('/'))
+        return web.Response(text="", status=200)
+        # return web.Response(text="OK", content_type="text/html")
 
     # handle ws
     async def handle_websocket(self, request):
@@ -57,6 +64,7 @@ class HydroServer(Thread):
 
         return ws
 
+    # load index.html, replace vars
     def load_index(self):
         filePath = "web/index.html"
         f = open(filePath, "r")

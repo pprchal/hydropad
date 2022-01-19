@@ -10,6 +10,9 @@ class MIDIEngine(AbstractEngine):
         self.outport = mido.open_output(Config.midi_channel())
         print(f'MIDI Engine initialized: {Config.midi_channel()}')
 
+    def get_name(self):
+        return "MIDI"
+
     def handle_message(self, splits):
         note = 38
         
@@ -18,7 +21,7 @@ class MIDIEngine(AbstractEngine):
             
         if splits[0] == 'n':
             self.outport.send(mido.Message('note_on', channel=self.midi_channel, note=note, velocity=127, time = 200))
-            time.sleep(0.2)
+            # time.sleep(0.2)
             self.outport.send(mido.Message('note_off', channel=self.midi_channel, note=note, velocity=0))
         elif splits[0] == 'c':
             self.outport.send(mido.Message('control_change', channel=0, control=122, value=int(splits[1]), time=0))

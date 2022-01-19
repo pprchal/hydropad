@@ -29,8 +29,8 @@
             }else{
                 qcmd = `${type}/${cmd}/${param}`
             }
-            // post("/command", qcmd);
-            websocket.send(qcmd)
+            post("/c", qcmd);
+            // websocket.send(qcmd)
         }
 
         let prevDate = new Date()
