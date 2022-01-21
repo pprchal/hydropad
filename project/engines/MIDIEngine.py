@@ -1,7 +1,7 @@
 from threading import Thread
 from project.engines.AbstractEngine import AbstractEngine
 from project.Config import Config
-from project.Runtime import Runtime
+from project.Queue import Queue
 import time
 import mido
 
@@ -12,7 +12,8 @@ class MIDIProducer(Thread):
 
     def run(self):
         for message in self.input:
-            Runtime.queue_message(message.str())
+            str_msg = mido.format_as_string(message)
+            Queue.queue_message(str_msg)
 
     
 class MIDIEngine(AbstractEngine):
@@ -22,12 +23,12 @@ class MIDIEngine(AbstractEngine):
         self.outport = mido.open_output(Config.midi_channel())
         self.producer_t = MIDIProducer(mido.open_input(Config.midi_channel()))
         self.producer_t.start()
-
         print(f'MIDI Engine initialized: {Config.midi_channel()}')
 
     def get_name(self):
         return "MIDI"
 
+    # engine entrypoint
     def handle_message(self, splits):
         note = 38
         

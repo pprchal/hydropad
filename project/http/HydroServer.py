@@ -1,8 +1,25 @@
 from project.Config import Config
 from aiohttp import web, WSCloseCode
 import asyncio
+import time
 from project.Runtime import Runtime
 from threading import Thread
+from project.Queue import Queue
+
+
+class HydroServerPush(Thread):
+    def __init__(self, ws):
+        Thread.__init__(self)
+        self.ws = ws
+
+    def run(self):
+        loop = asyncio.new_event_loop()
+        while True:
+            if len(Queue.queue) >= 1:
+                message = Queue.queue.pop()
+                loop.run_until_complete(self.ws.send_str(message))
+            time.sleep(0.2)
+            
 
 class HydroServer(Thread):
     def __init__(self):
@@ -11,9 +28,11 @@ class HydroServer(Thread):
         self.app.add_routes([
             web.get('/', self.handle_index),
             web.static('/web', 'web'),
-            web.get('/ws', self.handle_websocket),
-            web.post('/c', self.handle_post)  ## TODO: remove and/or as option
+            web.get('/ws', self.handle_websocket)
+            ## web.post('/c', self.handle_post)  ## TODO: remove and/or as option
         ])
+        self.counter = 0
+
 
 
     # main handler entrypoint (thread/loop)
@@ -32,26 +51,22 @@ class HydroServer(Thread):
     async def handle_index(self, request):
         return web.Response(text=self.load_index(), content_type="text/html")
 
-    # handle command
-    async def handle_post(self, request):
-        # c/play/[volume]
-        # n/note
-        data = await request.content.read()
-        command = data.decode('utf8')
-        print(command)
-        Runtime.handle_message_multiple(command.split('/'))
-        return web.Response(text="", status=200)
 
     # handle ws
     async def handle_websocket(self, request):
         self.ws = web.WebSocketResponse()
         await self.ws.prepare(request)
 
+        # start push thread
+        self.push = HydroServerPush(self.ws)
+        self.push.start()
+
         async for msg in self.ws:
             print(msg.data)
             split = msg.data.split('/')
             Runtime.handle_message_multiple(split)
-            await self.ws.send_str('ok')
+            self.counter = self.counter + 1
+            await self.ws.send_str(f'counter: {self.counter}')
             
             # if msg.type == aiohttp.WSMsgType.TEXT:
             #     if msg.data == 'close':
@@ -61,7 +76,7 @@ class HydroServer(Thread):
             # elif msg.type == aiohttp.WSMsgType.ERROR:
             #     print('ws connection closed with exception %s' % ws.exception())
 
-        return ws
+        return self.ws
 
     # load index.html, replace vars
     def load_index(self):
@@ -71,3 +86,14 @@ class HydroServer(Thread):
         f.close()
         return content.replace("{hydropad:WS_ADDRESS}", f"ws://{Runtime.get_server_ip()}/ws")
 
+
+
+    # # handle command
+    # async def handle_post(self, request):
+    #     # c/play/[volume]
+    #     # n/note
+    #     data = await request.content.read()
+    #     command = data.decode('utf8')
+    #     print(command)
+    #     Runtime.handle_message_multiple(command.split('/'))
+    #     return web.Response(text="", status=200)

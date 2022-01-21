@@ -18,6 +18,7 @@
         }
 
         const websocket = new WebSocket('{hydropad:WS_ADDRESS}');
+        websocket.binaryType = "arraybuffer"
         websocket.onmessage = ({ data }) => {
             console.debug('ws: ' + data)
         };
