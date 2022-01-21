@@ -1,13 +1,28 @@
+from threading import Thread
 from project.engines.AbstractEngine import AbstractEngine
 from project.Config import Config
+from project.Runtime import Runtime
 import time
 import mido
 
+class MIDIProducer(Thread):
+    def __init__(self, input):
+        Thread.__init__(self)
+        self.input = input
+
+    def run(self):
+        for message in self.input:
+            Runtime.queue_message(message.str())
+
+    
 class MIDIEngine(AbstractEngine):
     midi_channel = 9
 
     def __init__(self):
         self.outport = mido.open_output(Config.midi_channel())
+        self.producer_t = MIDIProducer(mido.open_input(Config.midi_channel()))
+        self.producer_t.start()
+
         print(f'MIDI Engine initialized: {Config.midi_channel()}')
 
     def get_name(self):

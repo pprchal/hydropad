@@ -33,11 +33,9 @@ class HydroApp(tk.Frame):
         panel.image = code_bmp
         panel.pack()
         
-
     def on_quit_click(self):
         Runtime.server.quit()
         self.quit()
-
 
 def create_gui():
     root = tk.Tk()
@@ -49,7 +47,6 @@ def create_gui():
 Runtime.init()
 Runtime.server = HydroServer()            
 Runtime.server.start()
-
 create_gui().mainloop()
 
 # print("<ENTER>")

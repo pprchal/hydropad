@@ -41,18 +41,17 @@ class HydroServer(Thread):
         print(command)
         Runtime.handle_message_multiple(command.split('/'))
         return web.Response(text="", status=200)
-        # return web.Response(text="OK", content_type="text/html")
 
     # handle ws
     async def handle_websocket(self, request):
-        ws = web.WebSocketResponse()
-        await ws.prepare(request)
+        self.ws = web.WebSocketResponse()
+        await self.ws.prepare(request)
 
-        async for msg in ws:
+        async for msg in self.ws:
             print(msg.data)
             split = msg.data.split('/')
             Runtime.handle_message_multiple(split)
-            ws.send_str('ok')
+            await self.ws.send_str('ok')
             
             # if msg.type == aiohttp.WSMsgType.TEXT:
             #     if msg.data == 'close':
