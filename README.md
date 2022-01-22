@@ -3,7 +3,7 @@
 
 > Handy for garage bands, multiple musicans can control one drummer ;)
 
-> Core is websocket/MIDI/OSC... router.
+> MIDI websocket support.
 
 > Design your own `index.html`
 
@@ -31,9 +31,7 @@ xrdb -query
 
 
 ### Libs
-`pip install python-osc`
-`pip install PyQRCode`
-`pip install pypng`
+`pip -r requirements.txt`
 
 
 # Revision history
