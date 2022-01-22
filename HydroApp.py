@@ -47,12 +47,7 @@ def create_gui():
 Runtime.init()
 Runtime.server = HydroServer()            
 Runtime.server.start()
-
-
-# create_gui().mainloop()
-
-print("<ENTER>")
-input()
+create_gui().mainloop()
 
 
 
