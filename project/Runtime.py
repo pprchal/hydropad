@@ -1,3 +1,4 @@
+from threading import Condition
 from project.Config import Config
 from project.engines.OSCEngine import OSCEngine
 from project.engines.MIDIEngine import MIDIEngine

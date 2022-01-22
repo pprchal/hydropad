@@ -1,24 +1,25 @@
+from multiprocessing import Condition
 from project.Config import Config
 from aiohttp import web, WSCloseCode
 import asyncio
-import time
 from project.Runtime import Runtime
 from threading import Thread
 from project.Queue import Queue
-
 
 class HydroServerPush(Thread):
     def __init__(self, ws):
         Thread.__init__(self)
         self.ws = ws
 
+    # push events to browser
     def run(self):
         loop = asyncio.new_event_loop()
         while True:
-            if len(Queue.queue) >= 1:
-                message = Queue.queue.pop()
-                loop.run_until_complete(self.ws.send_str(message))
-            time.sleep(0.2)
+            with Queue.cond:
+                Queue.cond.wait()
+                while len(Queue.queue) >= 1:
+                    message = Queue.queue.pop()
+                    loop.run_until_complete(self.ws.send_str(message))
             
 
 class HydroServer(Thread):
@@ -31,9 +32,6 @@ class HydroServer(Thread):
             web.get('/ws', self.handle_websocket)
             ## web.post('/c', self.handle_post)  ## TODO: remove and/or as option
         ])
-        self.counter = 0
-
-
 
     # main handler entrypoint (thread/loop)
     def run(self):
@@ -60,13 +58,12 @@ class HydroServer(Thread):
         # start push thread
         self.push = HydroServerPush(self.ws)
         self.push.start()
+        print(f"websocket connected {request.url}")
 
         async for msg in self.ws:
             print(msg.data)
             split = msg.data.split('/')
             Runtime.handle_message_multiple(split)
-            self.counter = self.counter + 1
-            await self.ws.send_str(f'counter: {self.counter}')
             
             # if msg.type == aiohttp.WSMsgType.TEXT:
             #     if msg.data == 'close':
@@ -85,8 +82,6 @@ class HydroServer(Thread):
         content = f.read()
         f.close()
         return content.replace("{hydropad:WS_ADDRESS}", f"ws://{Runtime.get_server_ip()}/ws")
-
-
 
     # # handle command
     # async def handle_post(self, request):

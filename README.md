@@ -3,7 +3,7 @@
 
 > Handy for garage bands, multiple musicans can control one drummer ;)
 
-> Utilizes **MIDI** or OSC interface.
+> Core is websocket/MIDI/OSC... router.
 
 > Design your own `index.html`
 
@@ -13,7 +13,7 @@
 # How to run
 1) Run `python HydroApp.py`
 2) Scan QR code with mobile phone
-3) Control hydrogen with your phone 
+3) Control hydrogen/MIDI/OSC with your phone 
 
 **Do not forget!**
 * Check configuration `hydropad.ini`
@@ -40,6 +40,8 @@ xrdb -query
 * [01-15-2022] Started work on MIDI support - concept OK -> move to MIDI. Web socket needed
 * [02-17-2021] First prototype
 
+# TODO
+* Some packaging (flatpak?)
 
 Pavel Prchal, 2022
 

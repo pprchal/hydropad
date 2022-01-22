@@ -1,7 +1,8 @@
-import queue
+from threading import Condition
 
 class Queue():
     queue = []
+    cond = Condition()
 
     @classmethod 
     def queue_message(cls, msg):
