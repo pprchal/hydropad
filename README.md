@@ -1,4 +1,4 @@
-# Mobile drumpad for hydrogen
+# Mobile drumpad for hydrogen - version 0.3
 > Turns mobile phone into remote control for hydrogen.
 
 > Handy for garage bands, multiple musicans can control one drummer ;)
