@@ -1,4 +1,6 @@
 from multiprocessing import Condition
+
+import aiohttp
 from project.Config import Config
 from aiohttp import web, WSCloseCode
 import asyncio
@@ -10,11 +12,12 @@ class HydroServerPush(Thread):
     def __init__(self, ws):
         Thread.__init__(self)
         self.ws = ws
+        self.running = True
 
     # push events to browser
     def run(self):
         loop = asyncio.new_event_loop()
-        while True:
+        while self.running:
             with Queue.cond:
                 Queue.cond.wait()
                 while len(Queue.queue) >= 1:
@@ -47,7 +50,7 @@ class HydroServer(Thread):
 
     # handle ,,index.html''
     async def handle_index(self, request):
-        return web.Response(text=self.load_index(), content_type="text/html")
+        return web.Response(text=self.load_content(request), content_type="text/html")
 
 
     # handle ws
@@ -65,18 +68,19 @@ class HydroServer(Thread):
             split = msg.data.split('/')
             Runtime.handle_message_multiple(split)
             
-            # if msg.type == aiohttp.WSMsgType.TEXT:
-            #     if msg.data == 'close':
-            #         await ws.close()
-            #     else:
-            #         await ws.send_str('some websocket message payload')
-            # elif msg.type == aiohttp.WSMsgType.ERROR:
-            #     print('ws connection closed with exception %s' % ws.exception())
+            if msg.type == aiohttp.WSMsgType.TEXT:
+                if msg.data == 'close':
+                    self.push.running = False
+                    await self.ws.close()
+                else:
+                    await self.ws.send_str('some websocket message payload')
+            elif msg.type == aiohttp.WSMsgType.ERROR:
+                print('ws connection closed with exception %s' % self.ws.exception())
 
         return self.ws
 
     # load index.html, replace vars
-    def load_index(self):
+    def load_content(self, request):
         filePath = "web/index.html"
         f = open(filePath, "r")
         content = f.read()

@@ -1,4 +1,5 @@
 from threading import Thread
+import time
 from project.engines.AbstractEngine import AbstractEngine
 from project.Config import Config
 from project.Queue import Queue
@@ -39,7 +40,7 @@ class MIDIEngine(AbstractEngine):
             
         if splits[0] == 'n':
             self.outport.send(mido.Message('note_on', channel=self.midi_channel, note=note, velocity=127, time = 200))
-            # time.sleep(0.2)
+            time.sleep(0.2)
             self.outport.send(mido.Message('note_off', channel=self.midi_channel, note=note, velocity=0))
         elif splits[0] == 'c':
             self.outport.send(mido.Message('control_change', channel=0, control=122, value=int(splits[1]), time=0))

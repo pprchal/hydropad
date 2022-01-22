@@ -11,53 +11,16 @@
     <!-- CSS -->
     <link rel="stylesheet" href="web/normalize.css">
     <link rel="stylesheet" href="web/skeleton.css">
-    
     <script>
-        window.post = function (url, data) {
-            return fetch(url, { method: "POST", body: data })
-        }
+        let runtime = {
+            // globals
+            websocket: undefined,
 
-        const websocket = new WebSocket('{hydropad:WS_ADDRESS}');
-        websocket.binaryType = "arraybuffer"
-        websocket.onmessage = ({ data }) => {
-            console.debug('ws: ' + data)
-        };
-
-        function cmd(type, cmd, param) {
-            let qcmd = ''
-            if(param === undefined){
-                qcmd = `${type}/${cmd}`
-            }else{
-                qcmd = `${type}/${cmd}/${param}`
-            }
-            // post("/c", qcmd);
-            websocket.send(qcmd)
-        }
-
-        let prevDate = new Date()
-        let prevBPM = 60
-        function tapTempo() {
-            let date = new Date()
-            let delta = (date - prevDate) / 1000
-            prevDate = date
-
-            // 40 BPM is minimum, wait for next tap
-            let bpm = 40
-            if(delta >= 1.5){
-                console.debug('wait')
-            }else{
-                // tbetw[0,5] = 60 / BPM(120)
-                let currentBPM = 60 / delta
-                bpm = Math.floor((60 * currentBPM  + 40 * prevBPM) / 100)
-            }
-
-            if(bpm > 180){
-                bpm = 180
-            }
-
-            document.getElementById('divBPM').innerText = bpm
+            // configs
+            WS_ADDRESS: '{hydropad:WS_ADDRESS}'
         }
     </script>
+    <script src="web/hydropad.js"></script>
 </head>
 
 <body>
@@ -79,8 +42,13 @@
         <input type="button" onclick="cmd('n', 'C1')" value="Note" class="one-third column button" />
         <input type="button" onclick="cmd('n', 'C2')" value="Note2" class="one-third column button" />
 
+        <div id="debug"></div>
         <div>Pavel Prchal, 2022</div>
     </div>
+
+    <script>
+        startWS(document.getElementById('debug'))
+    </script>
 </body>
 
 </html>
