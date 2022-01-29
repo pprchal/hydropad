@@ -16,7 +16,6 @@ class MIDIProducer(Thread):
             with Queue.cond:
                 str_msg = mido.format_as_string(message)
                 Queue.queue_message(str_msg)
-                Queue.cond.notify()
 
     
 class MIDIEngine(AbstractEngine):

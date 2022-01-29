@@ -8,4 +8,6 @@ class Queue():
     def queue_message(cls, msg):
         print(msg)
         cls.queue.append(msg)
+        cls.cond.notify()
+
     
