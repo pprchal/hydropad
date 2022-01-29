@@ -55,15 +55,15 @@ class HydroServer(Thread):
 
     # handle ws
     async def handle_websocket(self, request):
-        self.ws = web.WebSocketResponse()
-        await self.ws.prepare(request)
+        ws = web.WebSocketResponse()
+        await ws.prepare(request)
 
         # start push thread
-        self.push = HydroServerPush(self.ws)
+        self.push = HydroServerPush(ws)
         self.push.start()
         print(f"websocket connected {request.url}")
 
-        async for msg in self.ws:
+        async for msg in ws:
             print(msg.data)
             split = msg.data.split('/')
             Runtime.handle_message_multiple(split)
@@ -71,11 +71,11 @@ class HydroServer(Thread):
             if msg.type == aiohttp.WSMsgType.TEXT:
                 if msg.data == 'close':
                     self.push.running = False
-                    await self.ws.close()
+                    await ws.close()
                 else:
-                    await self.ws.send_str('some websocket message payload')
+                    await ws.send_str('some websocket message payload')
             elif msg.type == aiohttp.WSMsgType.ERROR:
-                print('ws connection closed with exception %s' % self.ws.exception())
+                print('ws connection closed with exception %s' % ws.exception())
 
         return self.ws
 
