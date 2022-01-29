@@ -1,7 +1,3 @@
-// window.post = function (url, data) {
-//     return fetch(url, { method: "POST", body: data })
-// }
-
 function cmd(type, cmd, param) {
     let qcmd = ''
     if(param === undefined){
@@ -9,7 +5,6 @@ function cmd(type, cmd, param) {
     }else{
         qcmd = `${type}/${cmd}/${param}`
     }
-    // post("/c", qcmd);
     runtime.websocket.send(qcmd)
 }
 

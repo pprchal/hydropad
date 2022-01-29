@@ -22,6 +22,7 @@ class MIDIProducer(Thread):
 class MIDIEngine(AbstractEngine):
     midi_channel = 9
 
+    # open MIDI ports 
     def __init__(self):
         self.outport = mido.open_output(Config.midi_channel())
         self.producer_t = MIDIProducer(mido.open_input(Config.midi_channel()))
